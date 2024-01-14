@@ -1,36 +1,41 @@
 const { encode, decode } = require('url-encode-decode');
 // const { red, blue, bold, bgBlack, cyan, magenta, green } = require('kleur');
 
-async function getResults(name) {
+async function getResults(name:string) {
   const data = await fetch(
     `https://www.jiosaavn.com/api.php?p=1&q=${name}&_format=json&_marker=0&api_version=4&ctx=wap6dot0&n=20&__call=search.getResults`
   );
   if (data.status > 199) {
-    const res = await data.json();
+    const res:any = await data.json();
     return res.results;
   } else {
     console.log(data);
   }
 }
 
-async function getLink(id) {
+async function getLink(id:string) {
   const data = await fetch(
     `https://www.jiosaavn.com/api.php?__call=song.generateAuthToken&url=${id}&bitrate=128&api_version=4&_format=json&ctx=wap6dot0&_marker=0`
   );
   if (data.status >= 200) {
-    const res = await data.json();
+    const res:any = await data.json();
     let split1 = res.auth_url.split('?')[0];
     let split2 = split1.split('com');
     return 'https://aac.saavncdn.com' + split2[1];
   }
 }
 
-async function main(name) {
+async function main(name:string) {
   let res_arr = [];
   const arr = await getResults(name);
 
   for (const item of arr) {
-    let obj = {}
+    let obj:{name: string; image: string; subtitle: string ; url?:string} ={} as {
+      name: string;
+      image: string;
+      subtitle: string;
+      url?: string;
+  };
     // console.log(
     //   '____________________________________________________________________________________________________________'
     // );
@@ -65,4 +70,4 @@ async function main(name) {
 // main('blinding lights'); // give the song name to be fetched as an argument
 
 
-module.exports =  main;
+export default main;
