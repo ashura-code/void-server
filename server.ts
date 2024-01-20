@@ -3,7 +3,6 @@ import express from 'express';
 const app = express();
 import { data_inter, data_search } from './database_interaction';
 
-
 // main server
 
 app.get('/songs/:name', async (req, res) => {
@@ -21,11 +20,9 @@ app.get('/songs/:name', async (req, res) => {
     result.map((song) => {
       data_inter(song.name, song.image, song.subtitle, song.url);
     });
-  }else{
+  } else {
     res.json(searchResult);
   }
 });
 
-
-
-app.listen(process.env.PORT || 3000);
+app.listen(443);
